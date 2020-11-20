@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="`${changeBackground()}`">
 
     <header>
       <h1>Weather App</h1>
@@ -58,6 +58,30 @@ export default {
       const year = today.getFullYear()
 
       return `${day}, ${date}.${month}, ${year}`
+    },
+    changeBackground() {
+      if(typeof this.weather.main == 'undefined') return ''
+      let weatherClass
+      switch(this.weather.weather[0].main) {
+        case 'Rain':
+        case 'Drizzle':
+          weatherClass = 'rainy'
+          break
+        case 'Fog':
+        case 'Mist':
+          weatherClass = 'foggy'
+          break
+        case 'Clouds':
+          weatherClass = 'cloudy'
+          break
+        case 'Snow':
+          weatherClass = 'snowy'
+          break
+        default:
+          weatherClass = ''
+      }
+      console.log('hello')
+      return weatherClass
     }
   }
 }
@@ -79,6 +103,23 @@ export default {
   min-height: 100vh;
   background-size: cover;
   padding: 20px;
+  transition: 0.5s;
+}
+
+#app.rainy {
+  background-image: url('./assets/rain.jpg');
+}
+
+#app.foggy {
+  background-image: url('./assets/fog.jpg');
+}
+
+#app.cloudy {
+  background-image: url('./assets/clouds.jpg');
+}
+
+#app.snowy {
+  background-image: url('./assets/snow.jpg');
 }
 
 header {
@@ -96,7 +137,8 @@ input {
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
   border-radius: 15px 0;
   border: none;
-  transition: 0.5s;
+  outline: none;
+  transition: 0.5s; /* doesn't work in Mozilla */
 }
 
 input:focus {
